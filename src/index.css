@@ -3,5 +3,41 @@
 @tailwind utilities;
 
 .App {
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
     text-align: center;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.steps {
+    max-width: 100%; 
+    max-height: 300px; 
+    margin: 5rem auto 1rem auto; 
+    width: 11rem;
+    height: 7rem;
+}
+
+.logo {
+    max-width: 100%; 
+    max-height: 300px; 
+    margin: 1rem auto 3rem auto; 
+    width: 18rem;
+}
+
+h2 {
+    font-weight: 700;
+}
+
+button {
+    margin: 17rem auto 1rem auto; 
+    background-color: limegreen;
+    color: black;
+    padding: 1rem 3rem;
+    border-radius: 10px;
 }
