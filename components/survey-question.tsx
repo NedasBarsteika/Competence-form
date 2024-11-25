@@ -6,6 +6,8 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import logo from "./images/skillit.png";
+import Image from 'next/image';
 
 interface SurveyQuestionProps {
   questionNumber: number
@@ -46,7 +48,7 @@ export default function SurveyQuestion({
   return (
     <div className="min-h-screen bg-black text-white p-6 relative max-w-md mx-auto">
       {/* Top Bar */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between md:mt-0 mt-8 mb-8">
         <X className="w-6 h-6" />
         <div className="flex-1 mx-4 h-2 bg-white/20 rounded-full overflow-hidden">
           <motion.div 
@@ -70,14 +72,14 @@ export default function SurveyQuestion({
       <RadioGroup
         value={selectedAnswer}
         onValueChange={handleValueChange}
-        className="space-y-4"
+        className="sm:space-y-4 space-y-3"
       >
         {['Never', 'Rarely', 'Sometimes', 'Often', 'Everyday'].map((option) => (
           <motion.div
             key={option}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1 }}
-            className={`flex items-center justify-between rounded-full p-4 px-6 cursor-pointer ${
+            className={`flex items-center justify-between rounded-full lg:p-4 p-3 px-6 cursor-pointer ${
               selectedAnswer === option ? 'bg-green-500 text-white' : 'bg-white text-black'
             }`}
             onClick={() => handleValueChange(option)}
@@ -98,7 +100,7 @@ export default function SurveyQuestion({
       </RadioGroup>
 
       {/* Buttons */}
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 mb-8 space-y-4">
         <div className="flex gap-4">
           <Button
             variant="outline"
@@ -119,7 +121,11 @@ export default function SurveyQuestion({
 
       {/* Logo */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-        <span className="font-bold text-xl">skillit</span>
+        <Image
+          src={logo}
+          alt="Skillit Logo"
+          className="h-15 w-20 max-w-lg mx-auto transition-all"
+        />
       </div>
 
       {/* Decorative Curves */}
