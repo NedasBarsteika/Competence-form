@@ -18,6 +18,7 @@ interface SurveyQuestionProps {
   onComplete: () => void
   onQuestionSelectorOpen: () => void
   onAnswered: (answer: string | null) => void
+  onBegin: () => void
 }
 
 export default function SurveyQuestion({
@@ -28,9 +29,12 @@ export default function SurveyQuestion({
   onPrevious,
   onComplete,
   onQuestionSelectorOpen,
-  onAnswered
+  onAnswered,
+  onBegin
+
 }: SurveyQuestionProps) {
   const [progress, setProgress] = useState((questionNumber - 1) / (totalQuestions - 1))
+  const [showExitModal, setShowExitModal] = useState(false)
 
   useEffect(() => {
     const newProgress = (questionNumber - 1) / (totalQuestions - 1)
@@ -45,11 +49,76 @@ export default function SurveyQuestion({
     }
   }
 
+  // Will have to updated
+  const handleDiscard = () => {
+    onBegin()
+  }
+
+  // Will have to updated
+  const handleSaveDraft = () => {
+    onBegin()
+  }
+
   return (
     <div className="min-h-screen bg-black text-white p-6 relative max-w-md mx-auto">
+      {/* Exit Modal */}
+      <AnimatePresence>
+        {showExitModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg">
+              {/* Title */}
+              <h3 className="text-lg font-medium text-center text-black mb-4">
+                Do you want to discard or save your progress?
+              </h3>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col space-y-4">
+                <Button
+                  className="bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors"
+                  onClick={() => {
+                    setShowExitModal(false);
+                    handleDiscard();
+                  }}
+                >
+                  Discard
+                </Button>
+                <Button
+                  className="bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors"
+                  onClick={() => {
+                    setShowExitModal(false);
+                    handleSaveDraft();
+                  }}
+                >
+                  Save Draft
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="py-3 text-center text-black hover:text-gray-600 transition-colors"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+
       {/* Top Bar */}
       <div className="flex items-center justify-between md:mt-0 mt-8 mb-8">
-        <X className="w-6 h-6" />
+        <button
+          className="p-2"
+          onClick={() => setShowExitModal(true)}
+        >
+          <X className="w-6 h-6" />
+        </button>
         <div className="flex-1 mx-4 h-2 bg-white/20 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-green-600 rounded-full"
