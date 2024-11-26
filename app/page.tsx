@@ -25,10 +25,15 @@ export default function SurveyApp() {
 
   const handleStartSurvey = () => {
     setCurrentScreen('survey')
+    setCurrentQuestion(1)
   }
 
   const handleComplete = () => {
     setCurrentScreen('thank-you')
+  }
+
+  const handleBegin = () => {
+    setCurrentScreen('welcome')
   }
 
   const handleQuestionSelect = (questionNumber: number) => {
@@ -96,6 +101,7 @@ export default function SurveyApp() {
               onComplete={handleComplete}
               onQuestionSelectorOpen={() => setShowQuestionSelector(true)}
               onAnswered={(answer) => handleAnswerQuestion(currentQuestion, answer)}
+              onBegin={handleBegin}
             />
           </motion.div>
         )}
