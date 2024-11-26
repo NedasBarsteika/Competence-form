@@ -51,7 +51,7 @@ export default function SurveyQuestion({
       <div className="flex items-center justify-between md:mt-0 mt-8 mb-8">
         <X className="w-6 h-6" />
         <div className="flex-1 mx-4 h-2 bg-white/20 rounded-full overflow-hidden">
-          <motion.div 
+          <motion.div
             className="h-full bg-green-600 rounded-full"
             initial={{ width: `${((questionNumber - 1) / (totalQuestions - 1)) * 100}%` }}
             animate={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
@@ -79,21 +79,18 @@ export default function SurveyQuestion({
             key={option}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1 }}
-            className={`flex items-center justify-between rounded-full lg:p-4 p-3 px-6 cursor-pointer ${
-              selectedAnswer === option ? 'bg-green-500 text-white' : 'bg-white text-black'
-            }`}
+            className={`flex items-center justify-between rounded-full lg:p-4 p-3 px-6 cursor-pointer ${selectedAnswer === option ? 'bg-green-500 text-white' : 'bg-white text-black'
+              }`}
             onClick={() => handleValueChange(option)}
           >
-            <Label
-              htmlFor={option}
-              className="text-lg font-medium cursor-pointer flex-1"
-            >
-              {option}
-            </Label>
+            {/* Option Text */}
+            <span className="text-lg font-medium">{option}</span>
+
+            {/* Radix Radio Item */}
             <RadioGroupItem
               value={option}
               id={option}
-              className={selectedAnswer === option ? 'text-white' : 'text-green-600'}
+              className="h-4 w-4"
             />
           </motion.div>
         ))}
