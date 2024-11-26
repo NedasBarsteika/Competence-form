@@ -2,18 +2,27 @@
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import LoginPage from '@/components/login-page'
 import WelcomePage from '@/components/welcome-page'
 import SurveyQuestion from '@/components/survey-question'
 import ThankYouPage from '@/components/thank-you-page'
 import QuestionSelector from '@/components/question-selector'
 
 export default function SurveyApp() {
-  const [currentScreen, setCurrentScreen] = useState('welcome')
+  const [currentScreen, setCurrentScreen] = useState('login')
   const [currentQuestion, setCurrentQuestion] = useState(1)
   const [showQuestionSelector, setShowQuestionSelector] = useState(false)
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
   const [answers, setAnswers] = useState<Record<number, string>>({})
   
+  const handleLogin = (username: string, password: string) => {
+    if (username && password) {
+      setCurrentScreen('welcome')
+    } else {
+      alert('Please enter a valid username and password')
+    }
+  }
+
   const handleStartSurvey = () => {
     setCurrentScreen('survey')
   }
@@ -46,6 +55,18 @@ export default function SurveyApp() {
   return (
     <main className="min-h-screen bg-black overflow-hidden">
       <AnimatePresence mode="wait">
+        {currentScreen === 'login' && (
+          <motion.div
+            key="login"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <LoginPage onLogin={handleLogin} />
+          </motion.div>
+        )}
+
         {currentScreen === 'welcome' && (
           <motion.div
             key="welcome"
