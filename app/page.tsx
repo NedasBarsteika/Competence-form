@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import LoginPage from '@/components/login-page'
+import RegisterPage from '@/components/register-page'
 import WelcomePage from '@/components/welcome-page'
 import SurveyQuestion from '@/components/survey-question'
 import ThankYouPage from '@/components/thank-you-page'
@@ -19,8 +20,25 @@ export default function SurveyApp() {
     if (username && password) {
       setCurrentScreen('welcome')
     } else {
-      alert('Please enter a valid username and password')
+      alert('Username or Password was incorrect')
     }
+  }
+
+  const handleRegister = (username: string, password1: string, password2: string) => {
+    if (username && password1 && password2) {
+      if (password1 === password2) {
+        alert('Account successfully created')
+        setCurrentScreen('login')
+      } else {
+        alert('Passwords do not match')
+      }
+    } else {
+      alert ("Please write a Username and a Password")
+    }
+  }
+
+  const handleBegin = () => {
+    setCurrentScreen('welcome')
   }
 
   const handleStartSurvey = () => {
@@ -30,10 +48,6 @@ export default function SurveyApp() {
 
   const handleComplete = () => {
     setCurrentScreen('thank-you')
-  }
-
-  const handleBegin = () => {
-    setCurrentScreen('welcome')
   }
 
   const handleQuestionSelect = (questionNumber: number) => {
@@ -68,7 +82,25 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <LoginPage onLogin={handleLogin} />
+            <LoginPage 
+              onLogin={handleLogin} 
+              onRegister={() => setCurrentScreen('register')}
+            />
+          </motion.div>
+        )}
+        
+        {currentScreen === 'register' && (
+          <motion.div
+            key="register"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <RegisterPage 
+              onRegister={handleRegister} 
+              onClose={() => setCurrentScreen('login')}
+            />
           </motion.div>
         )}
 

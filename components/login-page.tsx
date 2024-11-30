@@ -4,7 +4,7 @@ import Image from "next/image";
 import steps from "./images/steps.png";
 import logo from "./images/skillit.png";
 
-export default function LoginPage({ onLogin }: { onLogin: (username: string, password: string) => void }) {
+export default function LoginPage({ onLogin, onRegister }: { onLogin: (username: string, password: string) => void; onRegister: () => void }) {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
@@ -30,7 +30,7 @@ export default function LoginPage({ onLogin }: { onLogin: (username: string, pas
         />
       </motion.div>
 
-      {/* Login Form */}
+      {/* Log In Form */}
       <motion.form
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -38,6 +38,7 @@ export default function LoginPage({ onLogin }: { onLogin: (username: string, pas
         onSubmit={handleSubmit}
         className="w-full max-w-md space-y-4 text-center"
       >
+        <h2 className="text-xl">Log In</h2>
         <div>
           <label htmlFor="username" className="sr-only">
             Username
@@ -64,11 +65,23 @@ export default function LoginPage({ onLogin }: { onLogin: (username: string, pas
             className="w-full p-3 rounded-md text-black bg-gray-100 focus:ring-2 focus:ring-green-500 outline-none"
           />
         </div>
+
         <Button
           type="submit"
           className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-400 transition-colors"
         >
-          Login
+          Log in
+          <span className="text-xl">→</span>
+        </Button>
+
+        <h2 className="text-xl">Don't have an account?</h2>
+
+        <Button
+        type="button"
+        onClick={onRegister}
+          className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-400 transition-colors"
+        >
+          Sign Up
           <span className="text-xl">→</span>
         </Button>
       </motion.form>
