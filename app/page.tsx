@@ -37,6 +37,7 @@ export default function SurveyApp() {
     }
   }
 
+  // Will have to be updated
   const handleViewDraft = () => {
     
   }

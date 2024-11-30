@@ -1,24 +1,34 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import logo from "./images/skillit.png";
-import Image from 'next/image';
+import Image from "next/image";
+
+type Option = "Never" | "Rarely" | "Sometimes" | "Often" | "Everyday";
+
+const descriptions: Record<Option, string> = {
+  Never: "This means you never engage in this activity.",
+  Rarely: "This means you engage in this activity rarely, once in a while.",
+  Sometimes: "This indicates you engage in this activity occasionally.",
+  Often: "This means you regularly engage in this activity.",
+  Everyday: "This means you engage in this activity every day.",
+};
 
 interface SurveyQuestionProps {
-  questionNumber: number
-  totalQuestions: number
-  selectedAnswer: string
-  onNext: () => void
-  onPrevious: () => void
-  onComplete: () => void
-  onQuestionSelectorOpen: () => void
-  onAnswered: (answer: string | null) => void
-  onBegin: () => void
+  questionNumber: number;
+  totalQuestions: number;
+  selectedAnswer: string;
+  onNext: () => void;
+  onPrevious: () => void;
+  onComplete: () => void;
+  onQuestionSelectorOpen: () => void;
+  onAnswered: (answer: string | null) => void;
+  onBegin: () => void;
 }
 
 export default function SurveyQuestion({
@@ -30,34 +40,38 @@ export default function SurveyQuestion({
   onComplete,
   onQuestionSelectorOpen,
   onAnswered,
-  onBegin
-
+  onBegin,
 }: SurveyQuestionProps) {
-  const [progress, setProgress] = useState((questionNumber - 1) / (totalQuestions - 1))
-  const [showExitModal, setShowExitModal] = useState(false)
+  const [progress, setProgress] = useState(
+    (questionNumber - 1) / (totalQuestions - 1)
+  );
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [expandedOption, setExpandedOption] = useState<string | null>(null);
 
   useEffect(() => {
-    const newProgress = (questionNumber - 1) / (totalQuestions - 1)
-    setProgress(newProgress)
-  }, [questionNumber, totalQuestions])
+    const newProgress = (questionNumber - 1) / (totalQuestions - 1);
+    setProgress(newProgress);
+    setExpandedOption(null);
+  }, [questionNumber, totalQuestions]);
 
   const handleValueChange = (value: string) => {
     if (value === selectedAnswer) {
-      onAnswered(null)
+      onAnswered(null);
     } else {
-      onAnswered(value)
+      onAnswered(value);
+      setExpandedOption(value);
     }
-  }
+  };
 
   // Will have to updated
   const handleDiscard = () => {
-    onBegin()
-  }
+    onBegin();
+  };
 
   // Will have to updated
   const handleSaveDraft = () => {
-    onBegin()
-  }
+    onBegin();
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-6 relative max-w-md mx-auto">
@@ -110,24 +124,26 @@ export default function SurveyQuestion({
         )}
       </AnimatePresence>
 
-
       {/* Top Bar */}
       <div className="flex items-center justify-between md:mt-0 mt-8 mb-8">
-        <button
-          className="p-2"
-          onClick={() => setShowExitModal(true)}
-        >
+        <button className="p-2" onClick={() => setShowExitModal(true)}>
           <X className="w-6 h-6" />
         </button>
         <div className="flex-1 mx-4 h-2 bg-white/20 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-green-600 rounded-full"
-            initial={{ width: `${((questionNumber - 1) / (totalQuestions - 1)) * 100}%` }}
+            initial={{
+              width: `${((questionNumber - 1) / (totalQuestions - 1)) * 100}%`,
+            }}
             animate={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
             transition={{ duration: 0.33 }}
           />
         </div>
-        <Button variant="ghost" className="p-2" onClick={onQuestionSelectorOpen}>
+        <Button
+          variant="ghost"
+          className="p-2"
+          onClick={onQuestionSelectorOpen}
+        >
           <ChevronLeft className="w-6 h-6 text-green-600" />
         </Button>
       </div>
@@ -141,27 +157,42 @@ export default function SurveyQuestion({
       <RadioGroup
         value={selectedAnswer}
         onValueChange={handleValueChange}
-        className="sm:space-y-4 space-y-3"
+        className="space-y-4"
       >
-        {['Never', 'Rarely', 'Sometimes', 'Often', 'Everyday'].map((option) => (
-          <motion.div
-            key={option}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.1 }}
-            className={`flex items-center justify-between rounded-full lg:p-4 p-3 px-6 cursor-pointer ${selectedAnswer === option ? 'bg-green-500 text-white' : 'bg-white text-black'
+        {(Object.keys(descriptions) as Option[]).map((option) => (
+          <div key={option} className="space-y-2">
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.1 }}
+              className={`flex items-center justify-between rounded-full p-4 px-6 cursor-pointer ${
+                selectedAnswer === option
+                  ? "bg-green-500 text-white"
+                  : "bg-white text-black"
               }`}
-            onClick={() => handleValueChange(option)}
-          >
-            {/* Option Text */}
-            <span className="text-lg font-medium">{option}</span>
+              onClick={() => handleValueChange(option)}
+            >
+              {/* Option Text */}
+              <span className="text-lg font-medium">{option}</span>
 
-            {/* Radix Radio Item */}
-            <RadioGroupItem
-              value={option}
-              id={option}
-              className="h-4 w-4"
-            />
-          </motion.div>
+              {/* Radix Radio Item */}
+              <RadioGroupItem value={option} id={option} className="h-4 w-4" />
+            </motion.div>
+
+            {/* Dropdown Description */}
+            <AnimatePresence>
+              {expandedOption === option && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-green-600 text-white rounded-lg p-4"
+                >
+                  {descriptions[option]}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         ))}
       </RadioGroup>
 
@@ -179,7 +210,7 @@ export default function SurveyQuestion({
             className="flex-1 rounded-full bg-green-500 text-black hover:bg-green-400"
             onClick={questionNumber === totalQuestions ? onComplete : onNext}
           >
-            {questionNumber === totalQuestions ? 'Complete' : 'Next'}
+            {questionNumber === totalQuestions ? "Complete" : "Next"}
             <ChevronRight className="w-5 h-5 ml-1" />
           </Button>
         </div>
@@ -198,6 +229,5 @@ export default function SurveyQuestion({
       <div className="fixed left-0 bottom-0 w-32 h-64 border-r border-green-600/20 rounded-full opacity-20" />
       <div className="fixed right-0 bottom-0 w-32 h-64 border-l border-green-600/20 rounded-full opacity-20" />
     </div>
-  )
+  );
 }
-
