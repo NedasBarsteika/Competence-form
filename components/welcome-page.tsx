@@ -4,7 +4,7 @@ import logo from "./images/skillit.png";
 import steps from "./images/steps.png";
 import Image from 'next/image';
 
-export default function WelcomePage({ onStart }: { onStart: () => void }) {
+export default function WelcomePage({ onStart, onSignOut, onViewDraft }: { onStart: () => void; onSignOut: () => void; onViewDraft: () => void }) {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between p-8">
       <motion.div
@@ -40,13 +40,33 @@ export default function WelcomePage({ onStart }: { onStart: () => void }) {
         transition={{ delay: 0.6 }}
         className="w-full max-w-md space-y-4 mb-16"
       >
-        <Button
-          onClick={onStart}
-          className="w-1/3 py-4 px-6 mx-auto bg-green-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-green-400 transition-colors"
-        >
-          SSO
-          <span className="text-xl">→</span>
-        </Button>
+        <h2 className="text-xl text-center mb-5">Ready to fill in?</h2>
+        {/* Buttons Row */}
+        <div className="flex justify-center gap-4">
+          <Button
+            onClick={onSignOut}
+            className="w-1/3 py-4 px-6 bg-red-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-red-400 transition-colors"
+          >
+            Sign Out
+            <span className="text-xl">←</span>
+          </Button>
+
+          <Button
+            onClick={onStart}
+            className="w-1/3 py-4 px-6 bg-green-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-green-400 transition-colors"
+          >
+            Start
+            <span className="text-xl">→</span>
+          </Button>
+
+          <Button
+            onClick={onViewDraft}
+            className="w-1/3 py-4 px-6 bg-gray-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-gray-400 transition-colors"
+          >
+            View Draft
+            <span className="text-xl">→</span>
+          </Button>
+        </div>
       </motion.div>
     </div>
   );
