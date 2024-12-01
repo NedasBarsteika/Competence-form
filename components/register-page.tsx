@@ -91,7 +91,7 @@ export default function RegisterPage({ onRegister, onClose }: { onRegister: (use
         <Button
           type="button"
           onClick={onClose}
-          className="w-full py-3 bg-gray-500 rounded-md text-black font-medium hover:bg-gray-400 transition-colors"
+          className="w-full py-3 bg-red-500 rounded-md text-black font-medium hover:bg-red-400 transition-colors"
         >
           Back
           <span className="text-xl">←</span>

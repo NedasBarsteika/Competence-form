@@ -37,6 +37,11 @@ export default function SurveyApp() {
     }
   }
 
+  // Will have to be updated
+  const handleViewDraft = () => {
+    
+  }
+
   const handleBegin = () => {
     setCurrentScreen('welcome')
   }
@@ -112,7 +117,11 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <WelcomePage onStart={handleStartSurvey} />
+            <WelcomePage 
+              onSignOut={() => setCurrentScreen('login')}
+              onStart={handleStartSurvey} 
+              onViewDraft={handleViewDraft}
+            />
           </motion.div>
         )}
         
