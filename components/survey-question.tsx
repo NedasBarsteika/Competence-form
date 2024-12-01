@@ -9,9 +9,7 @@ import { Label } from "@/components/ui/label";
 import logo from "./images/skillit.png";
 import Image from "next/image";
 
-type Option = "Never" | "Rarely" | "Sometimes" | "Often" | "Everyday";
-
-const descriptions: Record<Option, string> = {
+const descriptions = {
   Never: "This means you never engage in this activity.",
   Rarely: "This means you engage in this activity rarely, once in a while.",
   Sometimes: "This indicates you engage in this activity occasionally.",
@@ -59,8 +57,12 @@ export default function SurveyQuestion({
       onAnswered(null);
     } else {
       onAnswered(value);
-      setExpandedOption(value);
+      //setExpandedOption(null);
     }
+  };
+
+  const toggleDropdown = (option: string) => {
+    setExpandedOption((prev) => (prev === option ? null : option));
   };
 
   // Will have to updated
@@ -154,47 +156,62 @@ export default function SurveyQuestion({
       </h2>
 
       {/* Radio Options */}
-      <RadioGroup
-        value={selectedAnswer}
-        onValueChange={handleValueChange}
-        className="space-y-4"
-      >
-        {(Object.keys(descriptions) as Option[]).map((option) => (
-          <div key={option} className="space-y-2">
-            <motion.div
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
-              className={`flex items-center justify-between rounded-full p-4 px-6 cursor-pointer ${
-                selectedAnswer === option
-                  ? "bg-green-500 text-white"
-                  : "bg-white text-black"
-              }`}
-              onClick={() => handleValueChange(option)}
-            >
-              {/* Option Text */}
-              <span className="text-lg font-medium">{option}</span>
+      <div className="space-y-4">
+        {["Never", "Rarely", "Sometimes", "Often", "Everyday"].map((option) => (
+          <motion.div
+            key={option}
+            whileTap={{ scale: 0.95 }}
+            className={`flex flex-col rounded-full p-4 px-6 cursor-pointer ${
+              selectedAnswer === option
+                ? "bg-green-500 text-white"
+                : "bg-white text-black"
+            }`}
+            onClick={() => handleValueChange(option)}
+          >
+            <div className="flex items-center justify-between">
+              {/* Left: Radio Button */}
+              <div className="flex items-center gap-4">
+                <input
+                  type="radio"
+                  name="option"
+                  value={option}
+                  checked={selectedAnswer === option}
+                  onChange={() => handleValueChange(option)}
+                  className="cursor-pointer w-5 h-5"
+                />
+                <span className="text-lg font-medium">{option}</span>
+              </div>
 
-              {/* Radix Radio Item */}
-              <RadioGroupItem value={option} id={option} className="h-4 w-4" />
-            </motion.div>
+              {/* Right: Toggle Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent interfering with the answer selection
+                  toggleDropdown(option);
+                }}
+                className="ml-4 text-black bg-gray-200 rounded-full p-2 hover:bg-gray-300"
+              >
+                {expandedOption === option ? "▲" : "▼"}
+              </button>
+            </div>
 
-            {/* Dropdown Description */}
+            {/* Expanded Description */}
             <AnimatePresence>
               {expandedOption === option && (
                 <motion.div
+                  key="extra-info"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-green-600 text-white rounded-lg p-4"
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-lg text-sm"
                 >
-                  {descriptions[option]}
+                  {descriptions[option as keyof typeof descriptions]}
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
         ))}
-      </RadioGroup>
+      </div>
 
       {/* Buttons */}
       <div className="mt-8 mb-8 space-y-4">
