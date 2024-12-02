@@ -20,7 +20,7 @@ export default function SurveyApp() {
 
   const handleLogin = (username: string, password: string) => {
     if (!username || !password) {
-      alert("Username or Password was incorrect");
+      alert("Please enter Username and Password");
       return;
     }
     axios
@@ -32,11 +32,12 @@ export default function SurveyApp() {
         console.log(response);
         if (response.status === 200) {
           document.cookie = `token=${response.data}; path=/; max-age=3600; Secure; SameSite=Strict`;
-          setCurrentScreen('welcome')
+          setCurrentScreen("welcome")
         }
       })
       .catch(function (error: any) {
         console.log(error);
+        alert("Username or Password was incorrect")
       });
   };
 
@@ -45,20 +46,31 @@ export default function SurveyApp() {
     password1: string,
     password2: string
   ) => {
-    if (username && password1 && password2) {
-      if (password1 === password2) {
-        alert("Account successfully created");
-        setCurrentScreen("login");
-      } else {
-        alert("Passwords do not match");
-      }
-    } else {
-      alert("Please write a Username and a Password");
+    if (!username || !password1 || !password2) {
+      alert("Please enter a Username and Password");
+      return;
     }
+    if (password1 !== password2) {
+      alert("Entered passwords do not match");
+      return;
+    }
+    axios
+      .post('https://localhost:7278/api/user/register', {
+        username: username,
+        password: password1,
+      })
+      .then(function (response: any) {
+        console.log(response);
+        if (response.status === 200) {
+          alert("Account successfully created");
+          setCurrentScreen("login");
+        }
+      })
+      .catch(function (error: any) {
+        console.log(error);
+        alert(error.response.data);
+      });
   };
-
-  // Will have to be updated
-  const handleViewDraft = () => {};
 
   const handleBegin = () => {
     setCurrentScreen("welcome");
@@ -141,7 +153,6 @@ export default function SurveyApp() {
             <WelcomePage
               onSignOut={() => setCurrentScreen("login")}
               onStart={handleStartSurvey}
-              onViewDraft={handleViewDraft}
             />
           </motion.div>
         )}
