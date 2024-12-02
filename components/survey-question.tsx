@@ -17,7 +17,19 @@ const descriptions = {
   Everyday: "This means you engage in this activity every day.",
 };
 
+interface AnswerOption {
+  answerId: string;
+  answer: string;
+}
+
+interface Competence {
+  competenceId: string;
+  question: string;
+  answerOptions: AnswerOption[];
+}
+
 interface SurveyQuestionProps {
+  question: Competence;
   questionNumber: number;
   totalQuestions: number;
   selectedAnswer: string;
@@ -30,6 +42,7 @@ interface SurveyQuestionProps {
 }
 
 export default function SurveyQuestion({
+  question,
   questionNumber,
   totalQuestions,
   selectedAnswer,
@@ -52,11 +65,11 @@ export default function SurveyQuestion({
     setExpandedOption(null);
   }, [questionNumber, totalQuestions]);
 
-  const handleValueChange = (value: string) => {
-    if (value === selectedAnswer) {
+  const handleValueChange = (answerId: string) => {
+    if (answerId === selectedAnswer) {
       onAnswered(null);
     } else {
-      onAnswered(value);
+      onAnswered(answerId);
       //setExpandedOption(null);
     }
   };
@@ -152,21 +165,21 @@ export default function SurveyQuestion({
 
       {/* Question */}
       <h2 className="text-2xl font-medium mb-8 text-center">
-        {questionNumber}. Question? Question? Question?
+        {questionNumber}. {question.question}
       </h2>
 
       {/* Radio Options */}
       <div className="space-y-4">
-        {["Never", "Rarely", "Sometimes", "Often", "Everyday"].map((option) => (
+        {question.answerOptions.map((option) => (
           <motion.div
-            key={option}
+            key={option.answerId}
             whileTap={{ scale: 0.95 }}
             className={`flex flex-col rounded-[20px] p-4 px-6 cursor-pointer ${
-              selectedAnswer === option
+              selectedAnswer === option.answerId
                 ? "bg-green-500 text-white"
                 : "bg-white text-black"
             }`}
-            onClick={() => handleValueChange(option)}
+            onClick={() => handleValueChange(option.answerId)}
           >
             <div className="flex items-center justify-between">
               {/* Left: Radio Button */}
@@ -174,29 +187,29 @@ export default function SurveyQuestion({
                 <input
                   type="radio"
                   name="option"
-                  value={option}
-                  checked={selectedAnswer === option}
-                  onChange={() => handleValueChange(option)}
+                  value={option.answerId}
+                  checked={selectedAnswer === option.answerId}
+                  onChange={() => handleValueChange(option.answerId)}
                   className="cursor-pointer w-5 h-5"
                 />
-                <span className="text-lg font-medium">{option}</span>
+                <span className="text-lg font-medium">{option.answer}</span>
               </div>
 
               {/* Right: Toggle Button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent interfering with the answer selection
-                  toggleDropdown(option);
+                  toggleDropdown(option.answerId);
                 }}
                 className="ml-4 text-black bg-gray-200 rounded-full p-2 hover:bg-gray-300"
               >
-                {expandedOption === option ? "▲" : "▼"}
+                {expandedOption === option.answerId ? "▲" : "▼"}
               </button>
             </div>
 
             {/* Expanded Description */}
             <AnimatePresence>
-              {expandedOption === option && (
+              {expandedOption === option.answerId && (
                 <motion.div
                   key="extra-info"
                   initial={{ opacity: 0, height: 0 }}
@@ -205,7 +218,7 @@ export default function SurveyQuestion({
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-[5px] text-sm"
                 >
-                  {descriptions[option as keyof typeof descriptions]}
+                  {descriptions[option.answerId as keyof typeof descriptions]}
                 </motion.div>
               )}
             </AnimatePresence>
