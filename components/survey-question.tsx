@@ -161,7 +161,7 @@ export default function SurveyQuestion({
           <motion.div
             key={option}
             whileTap={{ scale: 0.95 }}
-            className={`flex flex-col rounded-full p-4 px-6 cursor-pointer ${
+            className={`flex flex-col rounded-[20px] p-4 px-6 cursor-pointer ${
               selectedAnswer === option
                 ? "bg-green-500 text-white"
                 : "bg-white text-black"
@@ -203,7 +203,7 @@ export default function SurveyQuestion({
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-lg text-sm"
+                  className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-[5px] text-sm"
                 >
                   {descriptions[option as keyof typeof descriptions]}
                 </motion.div>
