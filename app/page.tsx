@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LoginPage from "@/components/login-page";
 import RegisterPage from "@/components/register-page";
@@ -10,11 +10,10 @@ import ThankYouPage from "@/components/thank-you-page";
 import QuestionSelector from "@/components/question-selector";
 import axios from "axios";
 
-//const axios = require("axios");
-
 interface AnswerOption {
   answerId: string;
   answer: string;
+  description: string;
 }
 
 interface Competence {
@@ -37,6 +36,8 @@ export default function SurveyApp() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [questions, setQuestions] = useState<Competence[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [token, setToken] = useState<string | null>(null);
+  const [competenceSetID1, setCompetenceSetID1] = useState<string>("");
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {
@@ -54,6 +55,7 @@ export default function SurveyApp() {
 
       if (response.status === 200) {
         const token = response.data;
+        setToken(token);
         document.cookie = `token=${token}; path=/; max-age=3600; Secure; SameSite=Strict`;
         setCurrentScreen("welcome");
 
@@ -97,7 +99,7 @@ export default function SurveyApp() {
       });
   };
 
-  const fetchQuestions = async (token: string) => {
+  const fetchQuestions = async (token: string | null) => {
     try {
       const response = await axios.get<CompetenceSet>(
         "https://localhost:7278/api/questions",
@@ -108,13 +110,90 @@ export default function SurveyApp() {
         }
       );
 
+      const conpetenceSet = response.data.competenceSetId;
+      setCompetenceSetID1(conpetenceSet);
+
       // Deserialize questions
       const competences = response.data.competences;
+
+      // Pre-fill answers based on drafts
+      const initialAnswers: Record<number, string> = {};
+      const answered: SetStateAction<number[]> = [];
+      competences.forEach((competence, index) => {
+        if (competence.draftedAnswerId) {
+          initialAnswers[index + 1] = competence.draftedAnswerId;
+          answered.push(index + 1);
+        }
+      });
+
       setQuestions(competences);
       setTotalQuestions(competences.length);
+      setAnswers(initialAnswers);
+      setAnsweredQuestions(answered);
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
+  };
+
+  const saveDraft = async (
+    questionNumber: number,
+    competenceSetId: string,
+    competenceId: string,
+    answerId: string
+  ) => {
+    if (!token) {
+      console.error("No token found, user not logged in.");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "https://localhost:7278/api/questions/SaveAnsweredQuestion",
+        {
+          competenceSetId,
+          competenceId,
+          answerId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(`Draft saved for question ${questionNumber}`);
+    } catch (error) {
+      console.error("Error saving draft:", error);
+    }
+  };
+
+  const handleDiscard = async () => {
+    if (!token) {
+      console.error("No token found, user not logged in.");
+      return;
+    }
+
+    try {
+      // Send a request to delete all drafts
+      const response = await axios.post(
+        "https://localhost:7278/api/questions/deleteDrafts",
+        {}, // No body is required for this endpoint
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Clear local state
+      setAnswers({});
+      setAnsweredQuestions([]);
+      console.log("All drafts cleared successfully.");
+    } catch (error) {
+      console.error("Error discarding drafts:", error);
+    }
+    setCurrentScreen("welcome");
   };
 
   const handleBegin = () => {
@@ -137,13 +216,22 @@ export default function SurveyApp() {
 
   const handleAnswerQuestion = (
     questionNumber: number,
-    answer: string | null
+    answerId: string | null
   ) => {
-    if (answer) {
-      setAnswers((prev) => ({ ...prev, [questionNumber]: answer }));
+    const question = questions[questionNumber - 1];
+    if (answerId) {
+      setAnswers((prev) => ({ ...prev, [questionNumber]: answerId }));
       if (!answeredQuestions.includes(questionNumber)) {
         setAnsweredQuestions((prev) => [...prev, questionNumber]);
       }
+
+      // Save draft
+      saveDraft(
+        questionNumber,
+        competenceSetID1,
+        question.competenceId,
+        answerId
+      );
     } else {
       setAnswers((prev) => {
         const newAnswers = { ...prev };
@@ -224,6 +312,7 @@ export default function SurveyApp() {
               onAnswered={(answer) =>
                 handleAnswerQuestion(currentQuestion, answer)
               }
+              onDiscardDraft={handleDiscard}
               onBegin={handleBegin}
             />
           </motion.div>

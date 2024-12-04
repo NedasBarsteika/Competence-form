@@ -2,24 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import logo from "./images/skillit.png";
 import Image from "next/image";
+import axios from "axios";
 
-const descriptions = {
+/*const descriptions = {
   Never: "This means you never engage in this activity.",
   Rarely: "This means you engage in this activity rarely, once in a while.",
   Sometimes: "This indicates you engage in this activity occasionally.",
   Often: "This means you regularly engage in this activity.",
   Everyday: "This means you engage in this activity every day.",
-};
+};*/
 
 interface AnswerOption {
   answerId: string;
   answer: string;
+  description: string;
 }
 
 interface Competence {
@@ -38,6 +40,7 @@ interface SurveyQuestionProps {
   onComplete: () => void;
   onQuestionSelectorOpen: () => void;
   onAnswered: (answer: string | null) => void;
+  onDiscardDraft: () => Promise<void>;
   onBegin: () => void;
 }
 
@@ -51,6 +54,7 @@ export default function SurveyQuestion({
   onComplete,
   onQuestionSelectorOpen,
   onAnswered,
+  onDiscardDraft,
   onBegin,
 }: SurveyQuestionProps) {
   const [progress, setProgress] = useState(
@@ -112,7 +116,8 @@ export default function SurveyQuestion({
                   className="bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors"
                   onClick={() => {
                     setShowExitModal(false);
-                    handleDiscard();
+                    //handleDiscard();
+                    onDiscardDraft();
                   }}
                 >
                   Discard
@@ -156,10 +161,10 @@ export default function SurveyQuestion({
         </div>
         <Button
           variant="ghost"
-          className="p-2"
+          className="p-2 bg-green-700 rounded-full hover:bg-green-600"
           onClick={onQuestionSelectorOpen}
         >
-          <ChevronLeft className="w-6 h-6 text-green-600" />
+          <ChevronLeft className="w-6 h-6 text-white" />
         </Button>
       </div>
 
@@ -201,9 +206,9 @@ export default function SurveyQuestion({
                   e.stopPropagation(); // Prevent interfering with the answer selection
                   toggleDropdown(option.answerId);
                 }}
-                className="ml-4 text-black bg-gray-200 rounded-full p-2 hover:bg-gray-300"
+                className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600"
               >
-                {expandedOption === option.answerId ? "▲" : "▼"}
+                {expandedOption === option.answerId ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
             </div>
 
@@ -218,7 +223,8 @@ export default function SurveyQuestion({
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-[5px] text-sm"
                 >
-                  {descriptions[option.answerId as keyof typeof descriptions]}
+                  {/* {descriptions[option.answerId as keyof typeof descriptions]} */}
+                  {option.description}
                 </motion.div>
               )}
             </AnimatePresence>

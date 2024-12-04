@@ -1,23 +1,23 @@
-import { motion } from 'framer-motion'
-import { X } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface QuestionSelectorProps {
-  currentQuestion: number
-  totalQuestions: number
-  answeredQuestions: number[]
-  onSelect: (questionNumber: number) => void
-  onClose: () => void
+  currentQuestion: number;
+  totalQuestions: number;
+  answeredQuestions: number[];
+  onSelect: (questionNumber: number) => void;
+  onClose: () => void;
 }
 
-export default function QuestionSelector({ 
+export default function QuestionSelector({
   currentQuestion,
   totalQuestions,
   answeredQuestions,
   onSelect,
-  onClose
+  onClose,
 }: QuestionSelectorProps) {
-  const questions = Array.from({ length: totalQuestions }, (_, i) => i + 1)
+  const questions = Array.from({ length: totalQuestions }, (_, i) => i + 1);
 
   return (
     <motion.div
@@ -41,20 +41,22 @@ export default function QuestionSelector({
         >
           <X className="w-6 h-6" />
         </Button>
-        
+
         <div className="grid grid-cols-4 gap-4 mt-8">
           {questions.map((number) => (
             <Button
               key={number}
               onClick={() => onSelect(number)}
               className={`
-                aspect-square rounded-xl flex items-center justify-center text-xl font-medium
-                ${number === currentQuestion 
-                  ? 'bg-gray-300 text-green-800' 
-                  : answeredQuestions.includes(number)
-                    ? 'bg-green-500 text-white'
-                    : 'bg-white text-black hover:bg-gray-100'}
-              `}
+        w-10 h-10 rounded-xl flex items-center justify-center text-xl font-medium
+        ${
+          number === currentQuestion
+            ? "bg-gray-300 text-green-800"
+            : answeredQuestions.includes(number)
+            ? "bg-green-500 text-white"
+            : "bg-white text-black hover:bg-gray-100"
+        }
+      `}
             >
               {number}
             </Button>
@@ -62,6 +64,5 @@ export default function QuestionSelector({
         </div>
       </motion.div>
     </motion.div>
-  )
+  );
 }
-
