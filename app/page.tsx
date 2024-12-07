@@ -9,6 +9,7 @@ import SurveyQuestion from "@/components/survey-question";
 import ThankYouPage from "@/components/thank-you-page";
 import QuestionSelector from "@/components/question-selector";
 import axios from "axios";
+import AdminPage from "@/components/admin-page";
 
 interface AnswerOption {
   answerId: string;
@@ -57,10 +58,24 @@ export default function SurveyApp() {
         const token = response.data;
         setToken(token);
         document.cookie = `token=${token}; path=/; max-age=3600; Secure; SameSite=Strict`;
-        setCurrentScreen("welcome");
 
-        // Fetch questions after login
-        await fetchQuestions(token);
+        try {
+          const response = await axios.get(
+            "https://localhost:7278/api/admin/surveyResults",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log(response);
+          setCurrentScreen("admin");
+        } catch (error) {
+          handleBegin();
+
+          // Fetch questions after login
+          await fetchQuestions(token);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -161,7 +176,6 @@ export default function SurveyApp() {
           },
         }
       );
-      console.log(`Draft saved for question ${questionNumber}`);
     } catch (error) {
       console.error("Error saving draft:", error);
     }
@@ -196,7 +210,30 @@ export default function SurveyApp() {
     setCurrentScreen("welcome");
   };
 
-  const handleBegin = () => {
+  const finalizeDraft = async () => {
+    if (!token) {
+      console.error("No token found, user not logged in.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://localhost:7278/api/questions/finalizeDraft",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+    catch (error) {
+      console.error("Error finalizing drafts:", error);
+    }
+  }
+
+  const handleBegin = () => {;
     setCurrentScreen("welcome");
   };
 
@@ -206,6 +243,7 @@ export default function SurveyApp() {
   };
 
   const handleComplete = () => {
+    finalizeDraft();
     setCurrentScreen("thank-you");
   };
 
@@ -327,6 +365,18 @@ export default function SurveyApp() {
             transition={{ duration: 0.33 }}
           >
             <ThankYouPage onFinish={() => setCurrentScreen("welcome")} />
+          </motion.div>
+        )}
+
+        {currentScreen === "admin" && token && (
+          <motion.div
+            key="admin"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <AdminPage token={token} onSignOut={() => setCurrentScreen("login")} />
           </motion.div>
         )}
       </AnimatePresence>
