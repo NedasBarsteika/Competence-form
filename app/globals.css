@@ -76,3 +76,31 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.hide-vertical-scrollbar .os-scrollbar.os-scrollbar-vertical {
+  display: none;
+}
+.hide-vertical-scrollbar {
+  overflow-y: scroll; /* Ensure vertical scrolling is functional */
+}
+.os-scrollbar .os-scrollbar-handle {
+  background-color: #08ec3c; /* Green scrollbar */
+  border-radius: 16px; /* Rounded scrollbar */
+}
+.os-scrollbar .os-scrollbar-handle:hover {
+  background-color: #4ef374; /* Light green on hover */
+}
+/* Horizontal scrollbar adjustments */
+.os-scrollbar.os-scrollbar-horizontal {
+  height: 18px; /* Increase the height of the horizontal scrollbar */
+}
+
+.os-scrollbar.os-scrollbar-horizontal .os-scrollbar-handle {
+  height: 18px; /* Match the horizontal scrollbar height */
+}
+th, td {
+  box-sizing: border-box; /* Include padding and border in the cell width */
+  overflow: hidden; /* Prevent text overflow */
+  text-overflow: ellipsis; /* Show "..." for truncated content */
+  white-space: nowrap; /* Prevent wrapping */
+}
