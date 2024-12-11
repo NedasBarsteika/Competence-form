@@ -10,14 +10,6 @@ import logo from "./images/skillit.png";
 import Image from "next/image";
 import axios from "axios";
 
-/*const descriptions = {
-  Never: "This means you never engage in this activity.",
-  Rarely: "This means you engage in this activity rarely, once in a while.",
-  Sometimes: "This indicates you engage in this activity occasionally.",
-  Often: "This means you regularly engage in this activity.",
-  Everyday: "This means you engage in this activity every day.",
-};*/
-
 interface AnswerOption {
   answerId: string;
   answer: string;
@@ -62,6 +54,7 @@ export default function SurveyQuestion({
   );
   const [showExitModal, setShowExitModal] = useState(false);
   const [expandedOption, setExpandedOption] = useState<string | null>(null);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   useEffect(() => {
     const newProgress = (questionNumber - 1) / (totalQuestions - 1);
@@ -90,6 +83,19 @@ export default function SurveyQuestion({
   // Will have to updated
   const handleSaveDraft = () => {
     onBegin();
+  };
+
+  const onSubmitModal = () => {
+    setShowSubmitModal(true);
+  }
+
+  const handleModalConfirm = () => {
+    setShowSubmitModal(false);
+    onComplete();
+  };
+
+  const handleModalCancel = () => {
+    setShowSubmitModal(false);
   };
 
   return (
@@ -135,6 +141,40 @@ export default function SurveyQuestion({
                   variant="ghost"
                   className="py-3 text-center text-black hover:text-gray-600 transition-colors"
                   onClick={() => setShowExitModal(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      
+      <AnimatePresence>
+        {showSubmitModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg">
+              <h3 className="text-lg font-medium text-center text-black mb-4">
+                Are you sure you want to submit?
+              </h3>
+              <div className="flex gap-4">
+                <Button
+                  className="flex-1 bg-green-500 text-white hover:bg-green-600"
+                  onClick={handleModalConfirm}
+                >
+                  Confirm
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 bg-white text-black hover:bg-gray-200"
+                  onClick={handleModalCancel}
                 >
                   Cancel
                 </Button>
@@ -223,7 +263,6 @@ export default function SurveyQuestion({
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-[5px] text-sm"
                 >
-                  {/* {descriptions[option.answerId as keyof typeof descriptions]} */}
                   {option.description}
                 </motion.div>
               )}
@@ -244,7 +283,7 @@ export default function SurveyQuestion({
           </Button>
           <Button
             className="flex-1 rounded-full bg-green-500 text-black hover:bg-green-400"
-            onClick={questionNumber === totalQuestions ? onComplete : onNext}
+            onClick={questionNumber === totalQuestions ? onSubmitModal : onNext}
           >
             {questionNumber === totalQuestions ? "Complete" : "Next"}
             <ChevronRight className="w-5 h-5 ml-1" />
