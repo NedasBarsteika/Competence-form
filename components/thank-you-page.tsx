@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function ThankYouPage({ onFinish }: { onFinish: () => void }) {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between p-8">
+    <div className="min-h-screen bg-[#1e1e1e] text-white flex flex-col items-center justify-between p-8">
       <Image
           src={steps}
           alt="Competence Form"

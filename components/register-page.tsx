@@ -15,7 +15,7 @@ export default function RegisterPage({ onRegister, onClose }: { onRegister: (use
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between p-8">
+    <div className="min-h-screen bg-[#1e1e1e] text-white flex flex-col items-center justify-between p-8">
       {/* Steps Image */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}

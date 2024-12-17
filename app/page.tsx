@@ -68,7 +68,6 @@ export default function SurveyApp() {
               },
             }
           );
-          console.log(response);
           setCurrentScreen("admin");
         } catch (error) {
           handleBegin();

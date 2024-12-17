@@ -1,4 +1,4 @@
-// File: C:\Users\Desctopas\Documents\Coding Projects\Websites\competence-form\Competence-form\app\layout.tsx
+// File: C:\Users\Vartotojas\Documents\Coding projects\HTML_CSS_JS\Competence-form\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

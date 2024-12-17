@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function WelcomePage({ onStart, onSignOut}: { onStart: () => void; onSignOut: () => void }) {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between p-8">
+    <div className="min-h-screen bg-[#1e1e1e] text-white flex flex-col items-center justify-between p-8">
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

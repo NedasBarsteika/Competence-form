@@ -14,7 +14,7 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
   };
 
   return (
-    <div className="min-h-screen bg-[#282828] text-white flex flex-col items-center justify-between p-8">
+    <div className="min-h-screen bg-[#1e1e1e] text-white flex flex-col items-center justify-between p-8">
       {/* Steps Image */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
@@ -68,7 +68,7 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
 
         <Button
           type="submit"
-          className="w-full py-3 bg-green-400 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
+          className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
         >
           Log in
           <span className="text-xl">→</span>
@@ -79,7 +79,7 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
         <Button
         type="button"
         onClick={onRegister}
-          className="w-full py-3 bg-green-400 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
+          className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
         >
           Sign Up
           <span className="text-xl">→</span>

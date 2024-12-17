@@ -67,7 +67,6 @@ export default function SurveyQuestion({
       onAnswered(null);
     } else {
       onAnswered(answerId);
-      //setExpandedOption(null);
     }
   };
 
@@ -75,12 +74,6 @@ export default function SurveyQuestion({
     setExpandedOption((prev) => (prev === option ? null : option));
   };
 
-  // Will have to updated
-  const handleDiscard = () => {
-    onBegin();
-  };
-
-  // Will have to updated
   const handleSaveDraft = () => {
     onBegin();
   };
@@ -99,7 +92,7 @@ export default function SurveyQuestion({
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 relative max-w-md mx-auto">
+    <div className="min-h-screen bg-[#1e1e1e] text-white p-6 relative max-w-md mx-auto">
       {/* Exit Modal */}
       <AnimatePresence>
         {showExitModal && (
