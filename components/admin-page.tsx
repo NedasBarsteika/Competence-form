@@ -14,20 +14,21 @@ type Competence = {
     competenceId: string;
     competenceTitle: string;
     value: number | null;
-  };
+};
 
-  type EmployeeData = {
+type EmployeeData = {
     recordId: string;
     authorId: string;
     authorUsername: string;
     competences: Competence[];
     submittedAt: string;
-  };
+};
 
 export default function AdminPage({ token, onSignOut }: { token: string; onSignOut: () => void; }) {
     const [surveyData, setSurveyData] = useState<EmployeeData[]>([]);
     const [competenceTitles, setCompetenceTitles] = useState<string[]>([]);
     const [skillsAverage, setSkillsAverage] = useState<number[]>([]);
+    const [unfinishedCount, setUnfinishedCount] = useState(0);
 
     const competencePoints: Record<string, string> = {
         "1": "Needs training",
@@ -40,66 +41,85 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
 
     useEffect(() => {
         const fetchSurveyResults = async () => {
-          try {
-            const response = await axios.get<EmployeeData[]>(
-              "https://localhost:7278/api/admin/surveyResults",
-              {
-                headers: {
-                    Authorization: `Bearer ${token}`,                
-                },
-              }
-            );
-    
-            const data = response.data;
-            setSurveyData(data);
-    
-            // Extract competence titles dynamically
-            if (data.length > 0) {
-              const titles = data[0].competences.map((comp) => comp.competenceTitle);
-              setCompetenceTitles(titles);
-    
-              // Calculate skills average
-              const averages = titles.map((_, colIndex) => {
-                const columnValues = data
-                  .map((employee) => employee.competences[colIndex]?.value)
-                  .filter((value) => value !== null) as number[];
-    
-                return (
-                  columnValues.reduce((sum, value) => sum + value, 0) /
-                  columnValues.length
+            try {
+                const response = await axios.get<EmployeeData[]>(
+                    "https://localhost:7278/api/admin/surveyResults",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
-              });
-              setSkillsAverage(averages);
+
+                const data = response.data;
+                setSurveyData(data);
+
+                // Extract competence titles dynamically
+                if (data.length > 0) {
+                    const titles = data[0].competences.map((comp) => comp.competenceTitle);
+                    setCompetenceTitles(titles);
+
+                    // Calculate skills average
+                    const averages = titles.map((_, colIndex) => {
+                        const columnValues = data
+                            .map((employee) => employee.competences[colIndex]?.value)
+                            .filter((value) => value !== null) as number[];
+
+                        return (
+                            columnValues.reduce((sum, value) => sum + value, 0) /
+                            columnValues.length
+                        );
+                    });
+                    setSkillsAverage(averages);
+                }
+            } catch (error) {
+                console.error("Error fetching survey results:", error);
             }
-          } catch (error) {
-            console.error("Error fetching survey results:", error);
-          }
         };
-    
+
+        const fetchUnfinishedCount = async () => {
+            try {
+                const response = await axios.get(
+                    "https://localhost:7278/api/admin/unfinishedUserCount",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                const data = response.data;
+                setUnfinishedCount(data);
+            } catch (error) {
+                console.error("Error fetching unfinished users count:", error);
+            }
+        }
+
         fetchSurveyResults();
-      }, []);
+        fetchUnfinishedCount();
+    }, []);
 
     const getSkillColor = (value: number | null) => {
-    switch (value) {
-      case 1:
-        return "bg-[#ff3c3c]";
-      case 2:
-        return "bg-[#ff9300]";
-      case 3:
-        return "bg-yellow-300";
-      case 4:
-        return "bg-[#a5ff99]";
-      case 5:
-        return "bg-[#00ff2d]";
-      case 6:
-        return "bg-[#119328]";
-      default:
-        return "bg-gray-300";
-    }
-  };
+        switch (value) {
+            case 1:
+                return "bg-[#ff3c3c]";
+            case 2:
+                return "bg-[#ff9300]";
+            case 3:
+                return "bg-yellow-300";
+            case 4:
+                return "bg-[#a5ff99]";
+            case 5:
+                return "bg-[#00ff2d]";
+            case 6:
+                return "bg-[#119328]";
+            default:
+                return "bg-gray-300";
+        }
+    };
 
     return (
-        <div className="relative px-6 py-8 bg-black text-white">
+        <div className="min-h-screen px-6 py-8 bg-[#1e1e1e] text-white">
             <Button
                 onClick={onSignOut}
                 className="w-1/8 py-4 px-6 bg-red-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-red-400 transition-colors mb-10"
@@ -155,19 +175,19 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                                         EMPLOYEES
                                     </th>
                                     {competenceTitles.map((title, index) => (
-                                            <th
-                                                key={index}
-                                                className="sticky top-0 bg-white text-black font-bold text-center px-2 py-4 z-20"
-                                                style={{
-                                                    width: "180px",
-                                                    height: "80px",
-                                                    border: "1px solid black",
-                                                    boxShadow: "0 1px 0 black",
-                                                }}
-                                            >
-                                                {title}
-                                            </th>
-                                        ))}
+                                        <th
+                                            key={index}
+                                            className="sticky top-0 bg-white text-black font-bold text-center px-2 py-4 z-20"
+                                            style={{
+                                                width: "180px",
+                                                height: "80px",
+                                                border: "1px solid black",
+                                                boxShadow: "0 1px 0 black",
+                                            }}
+                                        >
+                                            {title}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody>
@@ -190,7 +210,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                                                 key={colIndex}
                                                 className={`text-black text-center font-medium px-2 py-4 border border-black ${getSkillColor(
                                                     competence.value
-                                                  )}`}
+                                                )}`}
                                                 style={{
                                                     width: "180px",
                                                     height: "60px",
@@ -234,11 +254,16 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                     </OverlayScrollbarsComponent>
                 </div>
             </div>
+
+            <div className="flex items-center mt-10 text-xl">
+                <h2>Users that have not submitted the form: <span>{unfinishedCount}</span></h2>
+            </div>
+
             {/* Footer with Wavy Line Drawn in SVG */}
             <div className="relative mt-6">
                 {/* Centered Logo */}
-                <div className="flex justify-center mt-16">
-                    <Image src={skillit} alt="Skillit Logo" width={50} height={50} />
+                <div className="flex justify-center mt-16 h-15 w-20 max-w-lg mx-auto transition-all">
+                    <Image src={skillit} alt="Skillit Logo" />
                 </div>
             </div>
         </div>
