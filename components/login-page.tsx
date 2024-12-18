@@ -71,7 +71,6 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
           className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
         >
           Log in
-          <span className="text-xl">→</span>
         </Button>
 
         <h2 className="text-xl">Don't have an account?</h2>
@@ -82,7 +81,6 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
           className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
         >
           Sign Up
-          <span className="text-xl">→</span>
         </Button>
       </motion.form>
 

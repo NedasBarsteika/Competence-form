@@ -10,6 +10,7 @@ import ThankYouPage from "@/components/thank-you-page";
 import QuestionSelector from "@/components/question-selector";
 import axios from "axios";
 import AdminPage from "@/components/admin-page";
+import SurveyTypePage from "@/components/survey-type-page";
 
 interface AnswerOption {
   answerId: string;
@@ -190,7 +191,7 @@ export default function SurveyApp() {
       // Send a request to delete all drafts
       const response = await axios.post(
         "https://localhost:7278/api/questions/deleteDrafts",
-        {}, // No body is required for this endpoint
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -232,7 +233,7 @@ export default function SurveyApp() {
     }
   }
 
-  const handleBegin = () => {;
+  const handleBegin = () => {
     setCurrentScreen("welcome");
   };
 
@@ -322,7 +323,22 @@ export default function SurveyApp() {
           >
             <WelcomePage
               onSignOut={() => setCurrentScreen("login")}
-              onStart={handleStartSurvey}
+              onStart={() => setCurrentScreen("survey-type")}
+            />
+          </motion.div>
+        )}
+
+        {currentScreen === "survey-type" && (
+          <motion.div
+            key="survey-type"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <SurveyTypePage
+              onTestMode={handleStartSurvey}
+              onSelfEvaluationMode={handleStartSurvey}
             />
           </motion.div>
         )}

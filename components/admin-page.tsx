@@ -102,7 +102,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
     const getSkillColor = (value: number | null) => {
         switch (value) {
             case 1:
-                return "bg-[#ff3c3c]";
+                return "bg-[#eb4444]";
             case 2:
                 return "bg-[#ff9300]";
             case 3:
@@ -122,7 +122,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
         <div className="min-h-screen px-6 py-8 bg-[#1e1e1e] text-white">
             <Button
                 onClick={onSignOut}
-                className="w-1/8 py-4 px-6 bg-red-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-red-400 transition-colors mb-10"
+                className="w-1/8 py-4 px-6 bg-gray-400 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors mb-10"
             >
                 Sign Out
                 <span className="text-xl">←</span>
