@@ -205,7 +205,7 @@ export default function SurveyQuestion({
       </h2>
 
       {/* Radio Options */}
-      <div className="space-y-4">
+      <div className="space-y-4 flex-grow overflow-y-auto pb-24">
         {question.answerOptions.map((option) => (
           <motion.div
             key={option.answerId}
@@ -219,16 +219,16 @@ export default function SurveyQuestion({
           >
             <div className="flex items-center justify-between">
               {/* Left: Radio Button */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <input
                   type="radio"
                   name="option"
                   value={option.answerId}
                   checked={selectedAnswer === option.answerId}
                   onChange={() => handleValueChange(option.answerId)}
-                  className="cursor-pointer w-5 h-5"
+                  className="cursor-pointer w-4 h-4 md:w-5 md:h-5"
                 />
-                <span className="text-lg font-medium">{option.answer}</span>
+                <span className="text-sm md:text-lg font-medium">{option.answer}</span>
               </div>
 
               {/* Right: Toggle Button */}
@@ -239,7 +239,7 @@ export default function SurveyQuestion({
                 }}
                 className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600"
               >
-                {expandedOption === option.answerId ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
+                {expandedOption === option.answerId ? <ChevronUp className="w-4 h-4 md:w-6 md:h-6" /> : <ChevronDown className="w-4 h-4 md:w-6 md:h-6" />}
               </button>
             </div>
 
@@ -252,7 +252,7 @@ export default function SurveyQuestion({
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden mt-2 bg-green-600/80 text-white p-4 rounded-[5px] text-sm"
+                  className="overflow-hidden mt-2 bg-green-600/80 text-white p-3 rounded-md text-sm"
                 >
                   {option.description}
                 </motion.div>
@@ -263,7 +263,7 @@ export default function SurveyQuestion({
       </div>
 
       {/* Buttons */}
-      <div className="mt-8 mb-8 space-y-4">
+      <div className="fixed bottom-6 left-0 w-full px-6">
         <div className="flex gap-4">
           <Button
             variant="outline"
