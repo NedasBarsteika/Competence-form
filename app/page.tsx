@@ -54,7 +54,7 @@ export default function SurveyApp() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [token, setToken] = useState<string | null>(null);
   const [competenceSetID1, setCompetenceSetID1] = useState<string>("");
-  const [surveyResults, setSurveyResults] = useState<EmployeeData2[]>([]);
+  const [surveyResults, setSurveyResults] = useState<EmployeeData2 | null>(null);
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {

@@ -3,8 +3,6 @@ import logo from "./images/skillit.png";
 import steps from "./images/steps.png";
 import Image from 'next/image';
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useState } from "react";
-import axios from "axios";
 
 type Competence2 = {
   competenceId: string;
@@ -20,7 +18,7 @@ type EmployeeData2 = {
   submittedAt: string;
 };
 
-export default function ThankYouPage({ surveyData, onFinish }: { surveyData: EmployeeData2[]; onFinish: () => void }) {
+export default function ThankYouPage({ surveyData, onFinish }: { surveyData: EmployeeData2 | null; onFinish: () => void }) {
   const getSkillColor = (value: number | null) => {
     switch (value) {
       case 1:
@@ -102,7 +100,7 @@ export default function ThankYouPage({ surveyData, onFinish }: { surveyData: Emp
               </thead>
               <tbody>
                 {/* Display Data for a Single User */}
-                {surveyData?.competences.map((competence, index) => (
+                {surveyData?.competences.map((competence : Competence2, index: number) => (
                   <tr key={index}>
                     {/* Skill Title */}
                     <td
