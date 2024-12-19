@@ -42,7 +42,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
         const fetchSurveyResults = async () => {
             try {
                 const response = await axios.get<EmployeeData[]>(
-                    "https://localhost:7278/api/admin/surveyResults",
+                    "https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
         const fetchUnfinishedCount = async () => {
             try {
                 const response = await axios.get(
-                    "https://localhost:7278/api/admin/unfinishedUserCount",
+                    "https://competenceform20241219013412.azurewebsites.net/api/admin/unfinishedUserCount",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
