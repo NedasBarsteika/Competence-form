@@ -283,7 +283,7 @@ export default function SurveyQuestion({
       </div>
 
       {/* Logo */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+      <div className="mt-5 left-1/2 -translate-x-1/2">
         <Image
           src={logo}
           alt="Skillit Logo"
