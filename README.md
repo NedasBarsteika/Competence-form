@@ -1,3 +1,30 @@
+# Competence Form
+
+Competence form front-end
+
+## 📌 About
+
+We designed and built a survey-based application that dynamically evaluated employee competences based on their responses. The app features a sleek UX/UI design tailored to showcase competences and their levels in a visually engaging and easy-to-understand way. The main technologies used were C# TypeScript, React and a CSS framework called Tailwind.
+
+## 🎯 Project features
+
+* Modern design
+* Animations
+* Account handling (register, login functions)
+* Question handling with backend
+* Drafting function
+* Admin page
+
+# 🔧 Technologies used
+
+Backend:
+* C# .NET
+* SQL
+
+* TypeScript
+* React
+* Tailwind
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

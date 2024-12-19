@@ -239,7 +239,7 @@ export default function SurveyQuestion({
                 }}
                 className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600"
               >
-                {expandedOption === option.answerId ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {expandedOption === option.answerId ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
               </button>
             </div>
 

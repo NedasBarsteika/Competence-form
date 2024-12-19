@@ -30,6 +30,20 @@ interface CompetenceSet {
   competences: Competence[];
 }
 
+type Competence2 = {
+  competenceId: string;
+  competenceTitle: string;
+  value: number | null;
+};
+
+type EmployeeData2 = {
+  recordId: string;
+  authorId: string;
+  authorUsername: string;
+  competences: Competence2[];
+  submittedAt: string;
+};
+
 export default function SurveyApp() {
   const [currentScreen, setCurrentScreen] = useState("login");
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -40,6 +54,7 @@ export default function SurveyApp() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [token, setToken] = useState<string | null>(null);
   const [competenceSetID1, setCompetenceSetID1] = useState<string>("");
+  const [surveyResults, setSurveyResults] = useState<EmployeeData2[]>([]);
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {
@@ -227,6 +242,7 @@ export default function SurveyApp() {
           },
         }
       );
+      setSurveyResults(response.data);
     }
     catch (error) {
       console.error("Error finalizing drafts:", error);
@@ -323,12 +339,12 @@ export default function SurveyApp() {
           >
             <WelcomePage
               onSignOut={() => setCurrentScreen("login")}
-              onStart={() => setCurrentScreen("survey-type")}
+              onStart={() => handleStartSurvey()}
             />
           </motion.div>
         )}
 
-        {currentScreen === "survey-type" && (
+        {/* {currentScreen === "survey-type" && (
           <motion.div
             key="survey-type"
             initial={{ opacity: 0 }}
@@ -341,7 +357,7 @@ export default function SurveyApp() {
               onSelfEvaluationMode={handleStartSurvey}
             />
           </motion.div>
-        )}
+        )} */}
 
         {currentScreen === "survey" && (
           <motion.div
@@ -379,7 +395,7 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <ThankYouPage onFinish={() => setCurrentScreen("welcome")} />
+            <ThankYouPage surveyData={surveyResults} onFinish={() => setCurrentScreen("welcome")} />
           </motion.div>
         )}
 

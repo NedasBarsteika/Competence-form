@@ -36,7 +36,6 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
         "3": "Conceptual/trained",
         "4": "Experienced",
         "5": "Expert",
-        "6": "Guru",
     };
 
     useEffect(() => {
@@ -111,8 +110,6 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                 return "bg-[#a5ff99]";
             case 5:
                 return "bg-[#00ff2d]";
-            case 6:
-                return "bg-[#119328]";
             default:
                 return "bg-gray-300";
         }
@@ -125,7 +122,6 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                 className="w-1/8 py-4 px-6 bg-gray-400 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors mb-10"
             >
                 Sign Out
-                <span className="text-xl">←</span>
             </Button>
 
             {/* Header with Logo and Text */}
