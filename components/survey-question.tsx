@@ -267,13 +267,13 @@ export default function SurveyQuestion({
         <div className="flex gap-4">
           <Button
             variant="outline"
-            className="flex-1 rounded-full bg-white text-black hover:bg-white/90"
+            className="flex-1 rounded-full bg-white text-black hover:bg-white/90 z-10"
             onClick={onPrevious}
           >
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <Button
-            className="flex-1 rounded-full bg-green-500 text-black hover:bg-green-400"
+            className="flex-1 rounded-full bg-green-500 text-black hover:bg-green-400 z-10"
             onClick={questionNumber === totalQuestions ? onSubmitModal : onNext}
           >
             {questionNumber === totalQuestions ? "Complete" : "Next"}

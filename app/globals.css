@@ -6,6 +6,10 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+.motion.div[aria-expanded='true'] {
+  overflow: visible !important;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
