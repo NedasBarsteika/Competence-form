@@ -21,6 +21,7 @@ Backend:
 * C# .NET
 * SQL
 
+Frontend:
 * TypeScript
 * React
 * Tailwind
