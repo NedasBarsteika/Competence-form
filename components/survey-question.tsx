@@ -237,7 +237,7 @@ export default function SurveyQuestion({
                   e.stopPropagation(); // Prevent interfering with the answer selection
                   toggleDropdown(option.answerId);
                 }}
-                className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600 z-5"
+                className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600 z-10"
               >
                 {expandedOption === option.answerId ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
               </button>
