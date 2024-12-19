@@ -10,6 +10,20 @@ html, body {
   overflow: visible !important;
 }
 
+.non-interactive-area {
+  pointer-events: none; /* Prevent blocking clicks */
+}
+
+.parent-container {
+  position: relative;
+  z-index: 0; /* Ensure no overlap with buttons */
+}
+
+.expand-description {
+  position: relative;
+  z-index: 10; /* Ensure above other elements */
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
