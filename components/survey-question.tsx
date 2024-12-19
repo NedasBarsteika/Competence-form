@@ -97,7 +97,7 @@ export default function SurveyQuestion({
       <AnimatePresence>
         {showExitModal && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1e1e1e] bg-opacity-50"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -115,7 +115,6 @@ export default function SurveyQuestion({
                   className="bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors"
                   onClick={() => {
                     setShowExitModal(false);
-                    //handleDiscard();
                     onDiscardDraft();
                   }}
                 >
@@ -132,7 +131,7 @@ export default function SurveyQuestion({
                 </Button>
                 <Button
                   variant="ghost"
-                  className="py-3 text-center text-black hover:text-gray-600 transition-colors"
+                  className="py-3 bg-gray-400 text-center text-black hover:bg-gray-300 transition-colors"
                   onClick={() => setShowExitModal(false)}
                 >
                   Cancel
@@ -142,7 +141,6 @@ export default function SurveyQuestion({
           </motion.div>
         )}
       </AnimatePresence>
-
       
       <AnimatePresence>
         {showSubmitModal && (
@@ -241,7 +239,7 @@ export default function SurveyQuestion({
                 }}
                 className="ml-4 text-white bg-green-700 rounded-full p-2 hover:bg-green-600"
               >
-                {expandedOption === option.answerId ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {expandedOption === option.answerId ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
               </button>
             </div>
 

@@ -10,6 +10,7 @@ import ThankYouPage from "@/components/thank-you-page";
 import QuestionSelector from "@/components/question-selector";
 import axios from "axios";
 import AdminPage from "@/components/admin-page";
+import SurveyTypePage from "@/components/survey-type-page";
 
 interface AnswerOption {
   answerId: string;
@@ -29,6 +30,20 @@ interface CompetenceSet {
   competences: Competence[];
 }
 
+type Competence2 = {
+  competenceId: string;
+  competenceTitle: string;
+  value: number | null;
+};
+
+type EmployeeData2 = {
+  recordId: string;
+  authorId: string;
+  authorUsername: string;
+  competences: Competence2[];
+  submittedAt: string;
+};
+
 export default function SurveyApp() {
   const [currentScreen, setCurrentScreen] = useState("login");
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -39,6 +54,7 @@ export default function SurveyApp() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [token, setToken] = useState<string | null>(null);
   const [competenceSetID1, setCompetenceSetID1] = useState<string>("");
+  const [surveyResults, setSurveyResults] = useState<EmployeeData2[]>([]);
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {
@@ -190,7 +206,7 @@ export default function SurveyApp() {
       // Send a request to delete all drafts
       const response = await axios.post(
         "https://localhost:7278/api/questions/deleteDrafts",
-        {}, // No body is required for this endpoint
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -226,13 +242,14 @@ export default function SurveyApp() {
           },
         }
       );
+      setSurveyResults(response.data);
     }
     catch (error) {
       console.error("Error finalizing drafts:", error);
     }
   }
 
-  const handleBegin = () => {;
+  const handleBegin = () => {
     setCurrentScreen("welcome");
   };
 
@@ -322,10 +339,25 @@ export default function SurveyApp() {
           >
             <WelcomePage
               onSignOut={() => setCurrentScreen("login")}
-              onStart={handleStartSurvey}
+              onStart={() => handleStartSurvey()}
             />
           </motion.div>
         )}
+
+        {/* {currentScreen === "survey-type" && (
+          <motion.div
+            key="survey-type"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <SurveyTypePage
+              onTestMode={handleStartSurvey}
+              onSelfEvaluationMode={handleStartSurvey}
+            />
+          </motion.div>
+        )} */}
 
         {currentScreen === "survey" && (
           <motion.div
@@ -363,7 +395,7 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <ThankYouPage onFinish={() => setCurrentScreen("welcome")} />
+            <ThankYouPage surveyData={surveyResults} onFinish={() => setCurrentScreen("welcome")} />
           </motion.div>
         )}
 

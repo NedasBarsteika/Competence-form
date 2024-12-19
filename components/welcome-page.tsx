@@ -45,10 +45,9 @@ export default function WelcomePage({ onStart, onSignOut}: { onStart: () => void
         <div className="flex justify-center gap-4">
           <Button
             onClick={onSignOut}
-            className="w-1/2 py-4 px-6 bg-red-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-red-400 transition-colors"
+            className="w-1/2 py-4 px-6 bg-gray-400 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors"
           >
             Sign Out
-            <span className="text-xl">←</span>
           </Button>
 
           <Button
@@ -56,7 +55,6 @@ export default function WelcomePage({ onStart, onSignOut}: { onStart: () => void
             className="w-1/2 py-4 px-6 bg-green-500 rounded-full text-black font-medium flex items-center justify-center gap-2 hover:bg-green-400 transition-colors"
           >
             Start
-            <span className="text-xl">→</span>
           </Button>
         </div>
       </motion.div>

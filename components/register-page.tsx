@@ -85,16 +85,14 @@ export default function RegisterPage({ onRegister, onClose }: { onRegister: (use
           className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-400 transition-colors"
         >
           Log In
-          <span className="text-xl">→</span>
         </Button>
 
         <Button
           type="button"
           onClick={onClose}
-          className="w-full py-3 bg-red-500 rounded-md text-black font-medium hover:bg-red-400 transition-colors"
+          className="w-full py-3 bg-gray-400 rounded-md text-black font-medium hover:bg-gray-300 transition-colors"
         >
           Back
-          <span className="text-xl">←</span>
         </Button>
       </motion.form>
 
