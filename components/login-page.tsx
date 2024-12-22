@@ -76,8 +76,8 @@ export default function LoginPage({ onLogin, onRegister }: { onLogin: (username:
         <h2 className="text-xl">Don't have an account?</h2>
 
         <Button
-        type="button"
-        onClick={onRegister}
+          type="button"
+          onClick={onRegister}
           className="w-full py-3 bg-green-500 rounded-md text-black font-medium hover:bg-green-300 transition-colors"
         >
           Sign Up

@@ -1,6 +1,6 @@
 # Competence Form
 
-Competence form front-end
+Competence Form Frontend
 
 ## 📌 About
 
@@ -15,7 +15,7 @@ We designed and built a survey-based application that dynamically evaluated empl
 * Drafting function
 * Admin page
 
-# 🔧 Technologies used
+## 🔧 Technologies used
 
 Backend:
 * C# .NET
@@ -26,11 +26,38 @@ Frontend:
 * React
 * Tailwind
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 👨‍💻 Link to the backend repository
+
+https://github.com/r4faello/Skillit-Competence-Form-Backend
+
+## Used endpoints for the hosted backend
+
+admin.tsx:
+
+* https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults
+* https://competenceform20241219013412.azurewebsites.net/api/admin/unfinishedUserCount
+
+page.tsx:
+
+* https://competenceform20241219013412.azurewebsites.net/api/user/login
+* https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults
+* https://competenceform20241219013412.azurewebsites.net/api/user/register
+* https://competenceform20241219013412.azurewebsites.net/api/questions
+* https://competenceform20241219013412.azurewebsites.net/api/questions/SaveAnsweredQuestion
+* https://competenceform20241219013412.azurewebsites.net/api/questions/deleteDrafts
+* https://competenceform20241219013412.azurewebsites.net/api/questions/finalizeDraft
+
+## This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+Install npm: 
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev

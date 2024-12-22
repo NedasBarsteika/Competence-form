@@ -3,12 +3,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import logo from "./images/skillit.png";
 import Image from "next/image";
-import axios from "axios";
 
 interface AnswerOption {
   answerId: string;
@@ -141,7 +138,7 @@ export default function SurveyQuestion({
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       <AnimatePresence>
         {showSubmitModal && (
           <motion.div
@@ -210,11 +207,10 @@ export default function SurveyQuestion({
           <motion.div
             key={option.answerId}
             whileTap={{ scale: 0.95 }}
-            className={`flex flex-col rounded-[20px] p-2 px-6 cursor-pointer ${
-              selectedAnswer === option.answerId
+            className={`flex flex-col rounded-[20px] p-2 px-6 cursor-pointer ${selectedAnswer === option.answerId
                 ? "bg-green-500 text-white"
                 : "bg-white text-black"
-            }`}
+              }`}
             onClick={() => handleValueChange(option.answerId)}
           >
             <div className="flex items-center justify-between">

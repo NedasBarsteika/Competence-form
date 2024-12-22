@@ -4,7 +4,7 @@ import logo from "./images/skillit.png";
 import steps from "./images/steps.png";
 import Image from 'next/image';
 
-export default function WelcomePage({ onStart, onSignOut}: { onStart: () => void; onSignOut: () => void }) {
+export default function WelcomePage({ onStart, onSignOut }: { onStart: () => void; onSignOut: () => void }) {
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white flex flex-col items-center justify-between p-8">
       <motion.div

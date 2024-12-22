@@ -8,9 +8,8 @@ import WelcomePage from "@/components/welcome-page";
 import SurveyQuestion from "@/components/survey-question";
 import ThankYouPage from "@/components/thank-you-page";
 import QuestionSelector from "@/components/question-selector";
-import axios from "axios";
 import AdminPage from "@/components/admin-page";
-import SurveyTypePage from "@/components/survey-type-page";
+import axios from "axios";
 
 interface AnswerOption {
   answerId: string;
@@ -30,17 +29,17 @@ interface CompetenceSet {
   competences: Competence[];
 }
 
-type Competence2 = {
+type CompetenceAnswer = {
   competenceId: string;
   competenceTitle: string;
   value: number | null;
 };
 
-type EmployeeData2 = {
+type EmployeeData = {
   recordId: string;
   authorId: string;
   authorUsername: string;
-  competences: Competence2[];
+  competences: CompetenceAnswer[];
   submittedAt: string;
 };
 
@@ -53,8 +52,8 @@ export default function SurveyApp() {
   const [questions, setQuestions] = useState<Competence[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [token, setToken] = useState<string | null>(null);
-  const [competenceSetID1, setCompetenceSetID1] = useState<string>("");
-  const [surveyResults, setSurveyResults] = useState<EmployeeData2 | null>(null);
+  const [competenceSetID, setCompetenceSetID] = useState<string>("");
+  const [surveyResults, setSurveyResults] = useState<EmployeeData | null>(null);
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {
@@ -63,7 +62,7 @@ export default function SurveyApp() {
     }
     try {
       const response = await axios.post(
-        "https://competenceform20241219013412.azurewebsites.net/api/user/login",
+        "https://localhost:7278/api/user/login",
         {
           username,
           password,
@@ -77,7 +76,7 @@ export default function SurveyApp() {
 
         try {
           const response = await axios.get(
-            "https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults",
+            "https://localhost:7278/api/admin/surveyResults",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -112,7 +111,7 @@ export default function SurveyApp() {
       return;
     }
     axios
-      .post("https://competenceform20241219013412.azurewebsites.net/api/user/register", {
+      .post("https://localhost:7278/api/user/register", {
         username: username,
         password: password1,
       })
@@ -132,7 +131,7 @@ export default function SurveyApp() {
   const fetchQuestions = async (token: string | null) => {
     try {
       const response = await axios.get<CompetenceSet>(
-        "https://competenceform20241219013412.azurewebsites.net/api/questions",
+        "https://localhost:7278/api/questions",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -140,8 +139,8 @@ export default function SurveyApp() {
         }
       );
 
-      const conpetenceSet = response.data.competenceSetId;
-      setCompetenceSetID1(conpetenceSet);
+      const competenceSet = response.data.competenceSetId;
+      setCompetenceSetID(competenceSet);
 
       // Deserialize questions
       const competences = response.data.competences;
@@ -178,7 +177,7 @@ export default function SurveyApp() {
 
     try {
       await axios.post(
-        "https://competenceform20241219013412.azurewebsites.net/api/questions/SaveAnsweredQuestion",
+        "https://localhost:7278/api/questions/SaveAnsweredQuestion",
         {
           competenceSetId,
           competenceId,
@@ -203,9 +202,8 @@ export default function SurveyApp() {
     }
 
     try {
-      // Send a request to delete all drafts
       const response = await axios.post(
-        "https://competenceform20241219013412.azurewebsites.net/api/questions/deleteDrafts",
+        "https://localhost:7278/api/questions/deleteDrafts",
         {},
         {
           headers: {
@@ -233,7 +231,7 @@ export default function SurveyApp() {
 
     try {
       const response = await axios.post(
-        "https://competenceform20241219013412.azurewebsites.net/api/questions/finalizeDraft",
+        "https://localhost:7278/api/questions/finalizeDraft",
         {},
         {
           headers: {
@@ -282,7 +280,7 @@ export default function SurveyApp() {
       // Save draft
       saveDraft(
         questionNumber,
-        competenceSetID1,
+        competenceSetID,
         question.competenceId,
         answerId
       );
@@ -343,21 +341,6 @@ export default function SurveyApp() {
             />
           </motion.div>
         )}
-
-        {/* {currentScreen === "survey-type" && (
-          <motion.div
-            key="survey-type"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.33 }}
-          >
-            <SurveyTypePage
-              onTestMode={handleStartSurvey}
-              onSelfEvaluationMode={handleStartSurvey}
-            />
-          </motion.div>
-        )} */}
 
         {currentScreen === "survey" && (
           <motion.div

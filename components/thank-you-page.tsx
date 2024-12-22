@@ -4,21 +4,21 @@ import steps from "./images/steps.png";
 import Image from 'next/image';
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
-type Competence2 = {
+type Competence = {
   competenceId: string;
   competenceTitle: string;
   value: number | null;
 };
 
-type EmployeeData2 = {
+type EmployeeData = {
   recordId: string;
   authorId: string;
   authorUsername: string;
-  competences: Competence2[];
+  competences: Competence[];
   submittedAt: string;
 };
 
-export default function ThankYouPage({ surveyData, onFinish }: { surveyData: EmployeeData2 | null; onFinish: () => void }) {
+export default function ThankYouPage({ surveyData, onFinish }: { surveyData: EmployeeData | null; onFinish: () => void }) {
   const getSkillColor = (value: number | null) => {
     switch (value) {
       case 1:
@@ -55,15 +55,15 @@ export default function ThankYouPage({ surveyData, onFinish }: { surveyData: Emp
           <OverlayScrollbarsComponent
             options={{
               scrollbars: {
-                visibility: "auto", // Show scrollbars when scrolling
-                autoHide: "never", // Keep scrollbars always visible
+                visibility: "auto",
+                autoHide: "never",
               },
             }}
             className="overflow-y-scroll hide-vertical-scrollbar"
             style={{
-              maxHeight: "calc(100vh - 200px)", // Set a vertical max height
-              overflowX: "hidden", // No horizontal scrolling
-              paddingBottom: "40px", // Padding for visual clarity
+              maxHeight: "calc(100vh - 200px)",
+              overflowX: "hidden",
+              paddingBottom: "40px",
             }}
           >
             <table
@@ -100,7 +100,7 @@ export default function ThankYouPage({ surveyData, onFinish }: { surveyData: Emp
               </thead>
               <tbody>
                 {/* Display Data for a Single User */}
-                {surveyData?.competences.map((competence : Competence2, index: number) => (
+                {surveyData?.competences.map((competence: Competence, index: number) => (
                   <tr key={index}>
                     {/* Skill Title */}
                     <td
