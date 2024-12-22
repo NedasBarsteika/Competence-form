@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import steps from "./images/steps.png";
 import skillit from "./images/skillit.png";
-import rightLine from "./images/RightLine.png";
-import leftLine from "./images/LeftLine.png";
 import "../app/globals.css";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import "overlayscrollbars/overlayscrollbars.css";
@@ -31,18 +29,18 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
     const [unfinishedCount, setUnfinishedCount] = useState(0);
 
     const competencePoints: Record<string, string> = {
-        "1": "Needs training",
-        "2": "Training",
-        "3": "Conceptual/trained",
-        "4": "Experienced",
-        "5": "Expert",
+        "1": "Associate Professional",
+        "2": "Professional",
+        "3": "Senior Professional",
+        "4": "Advisor",
+        "5": "Principal",
     };
 
     useEffect(() => {
         const fetchSurveyResults = async () => {
             try {
                 const response = await axios.get<EmployeeData[]>(
-                    "https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults",
+                    "https://localhost:7278/api/admin/surveyResults",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -79,7 +77,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
         const fetchUnfinishedCount = async () => {
             try {
                 const response = await axios.get(
-                    "https://competenceform20241219013412.azurewebsites.net/api/admin/unfinishedUserCount",
+                    "https://localhost:7278/api/admin/unfinishedUserCount",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -137,15 +135,15 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                     <OverlayScrollbarsComponent
                         options={{
                             scrollbars: {
-                                visibility: "auto", // Show scrollbars when scrolling
-                                autoHide: "never", // Keep scrollbars always visible
+                                visibility: "auto",
+                                autoHide: "never",
                             },
                         }}
                         className="overflow-y-scroll hide-vertical-scrollbar"
                         style={{
                             maxHeight: "calc(100vh - 200px",
                             overflowX: 'hidden',
-                            paddingBottom: "40px",    // Create space for the scrollbar below the table
+                            paddingBottom: "40px",
                         }}
                     >
                         <table
@@ -153,7 +151,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                             style={{
                                 borderCollapse: "separate",
                                 borderSpacing: "0",
-                                tableLayout: "fixed", // Ensures column widths are respected
+                                tableLayout: "fixed",
                             }}
                         >
                             <thead>
@@ -255,9 +253,8 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                 <h2>Users that have not submitted the form: <span>{unfinishedCount}</span></h2>
             </div>
 
-            {/* Footer with Wavy Line Drawn in SVG */}
+            {/* Logo */}
             <div className="relative mt-6">
-                {/* Centered Logo */}
                 <div className="flex justify-center mt-16 h-15 w-20 max-w-lg mx-auto transition-all">
                     <Image src={skillit} alt="Skillit Logo" />
                 </div>
