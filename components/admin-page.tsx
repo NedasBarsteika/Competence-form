@@ -22,8 +22,8 @@ type EmployeeData = {
     submittedAt: string;
 };
 
-export default function AdminPage({ token, onSignOut }: { token: string; onSignOut: () => void; }) {
-    const [surveyData, setSurveyData] = useState<EmployeeData[]>([]);
+export default function AdminPage({ token, surveyResults, onSignOut }: { token: string; surveyResults: EmployeeData[]; onSignOut: () => void; }) {
+    // const [surveyData, setSurveyData] = useState<EmployeeData[]>([]);
     const [competenceTitles, setCompetenceTitles] = useState<string[]>([]);
     const [skillsAverage, setSkillsAverage] = useState<number[]>([]);
     const [unfinishedCount, setUnfinishedCount] = useState(0);
@@ -39,17 +39,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
     useEffect(() => {
         const fetchSurveyResults = async () => {
             try {
-                const response = await axios.get<EmployeeData[]>(
-                    "https://localhost:7278/api/admin/surveyResults",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                const data = response.data;
-                setSurveyData(data);
+                const data = surveyResults;
 
                 // Extract competence titles dynamically
                 if (data.length > 0) {
@@ -185,7 +175,7 @@ export default function AdminPage({ token, onSignOut }: { token: string; onSignO
                                 </tr>
                             </thead>
                             <tbody>
-                                {surveyData.map((employee, rowIndex) => (
+                                {surveyResults.map((employee, rowIndex) => (
                                     <tr key={rowIndex}>
                                         {/* Sticky EMPLOYEES Row */}
                                         <td

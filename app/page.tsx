@@ -53,7 +53,8 @@ export default function SurveyApp() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [token, setToken] = useState<string | null>(null);
   const [competenceSetID, setCompetenceSetID] = useState<string>("");
-  const [surveyResults, setSurveyResults] = useState<EmployeeData | null>(null);
+  const [allSurveyResults, setAllSurveyResults] = useState<EmployeeData[]>([]);
+  const [userSurveyResults, setUserSurveyResults] = useState<EmployeeData | null>(null);
 
   const handleLogin = async (username: string, password: string) => {
     if (!username || !password) {
@@ -83,6 +84,7 @@ export default function SurveyApp() {
               },
             }
           );
+          setAllSurveyResults(response.data);
           setCurrentScreen("admin");
         } catch (error) {
           handleBegin();
@@ -240,7 +242,7 @@ export default function SurveyApp() {
           },
         }
       );
-      setSurveyResults(response.data);
+      setUserSurveyResults(response.data);
     }
     catch (error) {
       console.error("Error finalizing drafts:", error);
@@ -378,7 +380,7 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <ThankYouPage surveyData={surveyResults} onFinish={() => setCurrentScreen("welcome")} />
+            <ThankYouPage surveyData={userSurveyResults} onFinish={() => setCurrentScreen("welcome")} />
           </motion.div>
         )}
 
@@ -390,7 +392,7 @@ export default function SurveyApp() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.33 }}
           >
-            <AdminPage token={token} onSignOut={() => setCurrentScreen("login")} />
+            <AdminPage token={token} surveyResults={allSurveyResults} onSignOut={() => setCurrentScreen("login")} />
           </motion.div>
         )}
       </AnimatePresence>
