@@ -67,7 +67,7 @@ export default function AdminPage({ token, surveyResults, onSignOut }: { token: 
         const fetchUnfinishedCount = async () => {
             try {
                 const response = await axios.get(
-                    "https://localhost:7278/api/admin/unfinishedUserCount",
+                    "https://competenceform20241219013412.azurewebsites.net/api/admin/unfinishedUserCount",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

@@ -33,7 +33,6 @@ https://github.com/r4faello/Skillit-Competence-Form-Backend
 
 admin.tsx:
 
-* https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults
 * https://competenceform20241219013412.azurewebsites.net/api/admin/unfinishedUserCount
 
 page.tsx:
