@@ -63,7 +63,7 @@ export default function SurveyApp() {
     }
     try {
       const response = await axios.post(
-        "https://localhost:7278/api/user/login",
+        "https://competenceform20241219013412.azurewebsites.net/api/user/login",
         {
           username,
           password,
@@ -77,7 +77,7 @@ export default function SurveyApp() {
 
         try {
           const response = await axios.get(
-            "https://localhost:7278/api/admin/surveyResults",
+            "https://competenceform20241219013412.azurewebsites.net/api/admin/surveyResults",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ export default function SurveyApp() {
       return;
     }
     axios
-      .post("https://localhost:7278/api/user/register", {
+      .post("https://competenceform20241219013412.azurewebsites.net/api/user/register", {
         username: username,
         password: password1,
       })
@@ -133,7 +133,7 @@ export default function SurveyApp() {
   const fetchQuestions = async (token: string | null) => {
     try {
       const response = await axios.get<CompetenceSet>(
-        "https://localhost:7278/api/questions",
+        "https://competenceform20241219013412.azurewebsites.net/api/questions",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -179,7 +179,7 @@ export default function SurveyApp() {
 
     try {
       await axios.post(
-        "https://localhost:7278/api/questions/SaveAnsweredQuestion",
+        "https://competenceform20241219013412.azurewebsites.net/api/questions/SaveAnsweredQuestion",
         {
           competenceSetId,
           competenceId,
@@ -205,7 +205,7 @@ export default function SurveyApp() {
 
     try {
       const response = await axios.post(
-        "https://localhost:7278/api/questions/deleteDrafts",
+        "https://competenceform20241219013412.azurewebsites.net/api/questions/deleteDrafts",
         {},
         {
           headers: {
@@ -233,7 +233,7 @@ export default function SurveyApp() {
 
     try {
       const response = await axios.post(
-        "https://localhost:7278/api/questions/finalizeDraft",
+        "https://competenceform20241219013412.azurewebsites.net/api/questions/finalizeDraft",
         {},
         {
           headers: {
